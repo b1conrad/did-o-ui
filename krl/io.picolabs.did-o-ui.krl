@@ -6,6 +6,8 @@ ruleset io.picolabs.did-o-ui {
     shares index, diddoc
   }
   global {
+    event_domain = "dido_ui"
+    channel_tags = ["didcomm2","ui"]
     elide = function(did){
       did_length = did.length()
       did_length < 30 => did |
@@ -43,5 +45,23 @@ document.getElementById("diddoc").value
 >>
       + html:footer()
     }
+  }
+  rule createChannel {
+    select when wrangler ruleset_installed where event:attr("rids") >< meta:rid
+    every {
+      wrangler:createChannel(
+        channel_tags,
+        {"allow":[{"domain":event_domain,"name":"*"}],"deny":[]},
+        {"allow":[{"rid":meta:rid,"name":"*"}],"deny":[]}
+      )
+    }
+    fired {
+      raise dido_ui event "factory_reset"
+    }
+  }
+  rule cleanupChannels {
+    select when dido_ui factory_reset
+    foreach wrangler:channels(channel_tags).reverse().tail() setting(chan)
+    wrangler:deleteChannel(chan.get("id"))
   }
 }
