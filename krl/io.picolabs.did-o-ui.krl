@@ -6,7 +6,7 @@ ruleset io.picolabs.did-o-ui {
     shares index, diddoc
   }
   global {
-    event_domain = "dido_ui"
+    event_domain = "did_o_ui"
     channel_tags = ["didcomm2","ui"]
     elide = function(did){
       did_length = did.length()
@@ -56,11 +56,11 @@ document.getElementById("diddoc").value
       )
     }
     fired {
-      raise dido_ui event "factory_reset"
+      raise did_o_ui event "factory_reset"
     }
   }
   rule cleanupChannels {
-    select when dido_ui factory_reset
+    select when did_o_ui factory_reset
     foreach wrangler:channels(channel_tags).reverse().tail() setting(chan)
     wrangler:deleteChannel(chan.get("id"))
   }
