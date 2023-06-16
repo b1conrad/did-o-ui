@@ -7,7 +7,7 @@ experiments in UX for DIDComm v2 in Picos
 1. form a URL of the form below
 1. visit that URL in your browser
 ```
-http://DOMAIN:PORT/c/ECI/io.picolabs.did-o-ui/index.html
+http://DOMAIN:PORT/c/ECI/query/io.picolabs.did-o-ui/index.html
 ```
 where DOMAIN and PORT identify your pico engine,
 and ECI is the channel identifier from step 3
